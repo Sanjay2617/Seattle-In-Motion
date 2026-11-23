@@ -6,8 +6,11 @@ Every minute or so, this project pulls real positions for boats in Elliott Bay, 
 
 I built it to get hands-on with streaming on AWS (alongside studying for the AWS Data Engineer Associate cert) and to have a project that uses data I can actually see out my window.
 
-![Dashboard, all modes](docs/dashboard_all.png)
-![Dashboard, ships only](docs/dashboard_ships.png)
+<p align="center">
+  <img src="docs/dashboard_all.png" alt="Dashboard showing ships, aircraft and Lime vehicles" width="900">
+  <br>
+  <em>The live dashboard: aircraft in blue, ships in orange, Lime bikes and scooters in green</em>
+</p>
 
 ---
 
@@ -19,6 +22,16 @@ I built it to get hands-on with streaming on AWS (alongside studying for the AWS
 - Puts ships, planes and scooters on the same **H3 hexagon grid** so they can be compared
 - Runs on an **hourly schedule** with data quality checks and email alerts on both AWS and Databricks
 - Costs roughly **$15 to $20 a month** to keep running (estimate, mostly the Kinesis shard)
+
+## A closer look
+
+Filtering the map to ships zooms into Elliott Bay. You can pick out the working waterfront, the Duwamish shipyards, the fishing fleet up in Lake Union, and the ferries crossing to Bremerton and Bainbridge.
+
+<p align="center">
+  <img src="docs/dashboard_ships.png" alt="Dashboard filtered to ships around Elliott Bay" width="900">
+  <br>
+  <em>Ships only, around Elliott Bay and Puget Sound</em>
+</p>
 
 ## Architecture
 
@@ -40,6 +53,14 @@ flowchart LR
     GO --> DQ[Data quality check]
     GO --> DB[Dashboard]
 ```
+
+Inside Databricks, one hourly job runs the whole lakehouse. Bronze loads first, the four silver tables build in parallel, then gold, then a data quality check that fails the run if any source has gone quiet.
+
+<p align="center">
+  <img src="docs/job_graph.png" alt="Databricks job graph" width="900">
+  <br>
+  <em>The hourly Databricks job</em>
+</p>
 
 ## Data sources
 
