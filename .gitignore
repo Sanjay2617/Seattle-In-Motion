@@ -1,0 +1,14 @@
+# secrets and temp files from deploying
+env.json
+event.json
+out.json
+.env
+
+# build artifacts
+*.zip
+ais_pkg/
+import/
+__pycache__/
+
+# mac
+.DS_Store
